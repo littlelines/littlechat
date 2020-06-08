@@ -10,7 +10,16 @@ defmodule Littlechat.MixProject do
       compilers: [:phoenix, :gettext] ++ Mix.compilers(),
       start_permanent: Mix.env() == :prod,
       aliases: aliases(),
-      deps: deps()
+      deps: deps(),
+      releases: [
+        littlechat: [
+          include_erts: true,
+          include_executables_for: [:unix],
+          applications: [
+            runtime_tools: :permanent
+          ]
+        ]
+      ]
     ]
   end
 
@@ -47,7 +56,9 @@ defmodule Littlechat.MixProject do
       {:gettext, "~> 0.11"},
       {:jason, "~> 1.0"},
       {:plug_cowboy, "~> 2.0"},
-      {:uuid, "~> 1.1"}
+      {:uuid, "~> 1.1"},
+      {:distillery, "~> 2.0"},
+      {:edeliver, ">= 1.6.0"}
     ]
   end
 
