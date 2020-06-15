@@ -89,3 +89,8 @@
 .alert:empty {
   display: none;
 }
+
+// Rotate the video to give a "mirrored" appearance. Feels more natural.
+#local-video {
+  transform: rotateY(180deg);
+}

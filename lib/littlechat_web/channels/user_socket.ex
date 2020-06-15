@@ -3,6 +3,7 @@ defmodule LittlechatWeb.UserSocket do
 
   ## Channels
   # channel "room:*", LittlechatWeb.RoomChannel
+  channel "call:*", LittlechatWeb.CallChannel
 
   # Socket params are passed from the client and can
   # be used to verify and authenticate a user. After
