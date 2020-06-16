@@ -25,7 +25,14 @@ defmodule LittlechatWeb.Room.ShowLive do
     <% end %>
     </ul>
 
+    <%= inspect @video_offers %>
+
+    <%= if @incoming_call? do %>
+    <p>You have an incoming call!</p>
+    <% end %>
+
     <video id="local-video" playsinline autoplay muted width="500"></video>
+
     <video id="remote-video" playsinline autoplay muted width="500"></video>
 
     <button phx-click="join-call" phx-hook="Call">Join Call</button>
@@ -37,19 +44,20 @@ defmodule LittlechatWeb.Room.ShowLive do
   def mount(%{"slug" => slug}, _session, socket) do
     # User presence tracking.
     user = create_connected_user()
+    # This PubSub subscription will also handle "video-offer" and other events
+    # from the users.
     Phoenix.PubSub.subscribe(Littlechat.PubSub, "room:" <> slug)
     {:ok, _} = Presence.track(self(), "room:" <> slug, user.uuid, %{})
-
-    # Subscribe the LiveView to video offers. See the handle_info/3 method below
-    # for how this is handled.
-    Phoenix.PubSub.subscribe(Littlechat.PubSub, "room:" <> slug <> ":video_offer")
 
     {:ok,
       socket
       |> assign(:slug, slug)
       |> assign(:user, create_connected_user())
       |> assign(:connected_users, [])
+      |> assign(:users_in_call, [])
+      |> assign(:video_offers, [])
       |> assign(:in_call?, false)
+      |> assign(:incoming_call?, false)
       |> assign(:room, Organizer.get_room(slug))
     }
   end
@@ -63,6 +71,15 @@ defmodule LittlechatWeb.Room.ShowLive do
 
   def handle_event("video-offer", %{"sdp" => sdp}, socket) do
     # Send to others.
+    LittlechatWeb.Endpoint.broadcast_from(
+      self(),
+      "room:" <> socket.assigns.slug,
+      "video_offer",
+      %{
+        sdp: sdp,
+        from_user: socket.assigns.user
+      }
+    )
 
     {:noreply, socket}
   end
@@ -70,6 +87,19 @@ defmodule LittlechatWeb.Room.ShowLive do
   @impl true
   def handle_event("leave-call", params, socket) do
     {:noreply, assign(socket, :in_call?, false)}
+  end
+
+  @impl true
+  def handle_info(%Broadcast{event: "video_offer", payload: %{sdp: sdp, from_user: from_user} = offer}, socket) do
+    if from_user == socket.assigns.user do
+      {:noreply, socket}
+    else
+      {:noreply,
+        socket
+        |> assign(:incoming_call?, true)
+        |> assign(:video_offers, socket.assigns.video_offers ++ [offer])
+      }
+    end
   end
 
   @impl true
