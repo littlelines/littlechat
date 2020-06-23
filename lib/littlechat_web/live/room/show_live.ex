@@ -37,7 +37,7 @@ defmodule LittlechatWeb.Room.ShowLive do
 
     <div id="sdp-offers">
       <%= for sdp_offer <- @sdp_offers do %>
-        <span phx-hook="HandleSdpOffer" data-from-user-uuid="<%= sdp_offer["from_user"] %>" data-sdp="<%= sdp_offer["description"]["sdp"] %>"><%= inspect sdp_offer %></span>
+        <span phx-hook="HandleSdpOffer" data-from-user-uuid="<%= sdp_offer["from_user"] %>" data-sdp="<%= sdp_offer["description"]["sdp"] %>"></span>
       <% end %>
     </div>
 
@@ -49,19 +49,17 @@ defmodule LittlechatWeb.Room.ShowLive do
 
     <div id="ice-candidates">
       <%= for ice_candidate_offer <- @ice_candidate_offers do %>
-        <span phx-hook="HandleIceCandidateOffer" data-from-user-uuid="<%= ice_candidate_offer["from_user"] %>" data-ice-candidate="<%= Jason.encode!(ice_candidate_offer["candidate"]) %>"><%= inspect ice_candidate_offer %></span>
+        <span phx-hook="HandleIceCandidateOffer" data-from-user-uuid="<%= ice_candidate_offer["from_user"] %>" data-ice-candidate="<%= Jason.encode!(ice_candidate_offer["candidate"]) %>"></span>
       <% end %>
     </div>
 
     <div id="offer-requests">
-      <%= inspect @offer_requests %>
       <%= for request <- @offer_requests do %>
         <span phx-hook="HandleOfferRequest" data-from-user-uuid="<%= request.from_user.uuid %>"></span>
       <% end %>
     </div>
 
     <div>
-      <button phx-click="start_call" phx-hook="StartCall">Start Call</button>
       <button phx-click="join_call" phx-hook="JoinCall">Join Call</button>
       <button phx-click="leave_call">Hang Up</button>
     </div>

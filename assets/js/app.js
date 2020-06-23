@@ -17,12 +17,23 @@ import {Socket} from "phoenix"
 import NProgress from "nprogress"
 import {LiveSocket} from "phoenix_live_view"
 import regeneratorRuntime from "regenerator-runtime"
+import adapter from "webrtc-adapter"
 
 let csrfToken = document.querySelector("meta[name='csrf-token']").getAttribute("content")
 
 var users = {}
 var peerConnections = []
 var localStream = null
+
+async function initStream() {
+  try {
+    const stream = await navigator.mediaDevices.getUserMedia({audio: true, video: true, width: "1280"})
+    localStream = stream;
+    document.getElementById("local-video").srcObject = stream
+  } catch (e) {
+    console.log(e)
+  }
+}
 
 var addUserConnection = (userUuid) => {
   if (users[userUuid] === undefined && userUuid != window.userUuid) {
@@ -102,39 +113,12 @@ var addTracksToPeerConnection = (peerConnection) => {
 }
 
 let Hooks = {}
-Hooks.StartCall = {
-  mounted() {
-    this.el.addEventListener("click", e => {
-      // let myConnection = createPeerConnection()
-      // Grabs local stream from the local computer.
-      navigator.mediaDevices.getUserMedia({audio: true, video: true})
-        .then(stream => {
-          localStream = stream;
-          document.getElementById("local-video").srcObject = stream
-          // Add each local track to the RTCPeerConnection.
-          // stream.getTracks().forEach(track => myConnection.addTrack(track, stream))
-          // Create the offer
-          // myConnection.createOffer()
-          //   .then(offer => {
-          //     // Sends ICE candidate SDP info to the server to be passed on to the other users.
-          //     myConnection.setLocalDescription(offer)
-          //     this.pushEvent("send_video_offer", {sdp: offer.sdp, targetUser: "test"})
-          //   })
-          //   .catch(err => { console.log(err) })
-        })
-        .catch(reason => {
-          console.log(reason)
-        })
-    })
-  }
-}
-
 Hooks.JoinCall = {
-
-}
-
-Hooks.SetupPeer = {
-
+  mounted () {
+    initStream()
+    // this.el.addEventListener("click", e => {
+    // })
+  }
 }
 
 Hooks.HandleOfferRequest = {
