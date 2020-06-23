@@ -25,18 +25,17 @@ defmodule LittlechatWeb.Room.ShowLive do
     <% end %>
     </ul>
 
-    <%= inspect @video_offers %>
-
-    <%= if @incoming_call? do %>
-    <p>You have an incoming call!</p>
-    <% end %>
-
     <video id="local-video" playsinline autoplay muted width="500"></video>
 
-    <video id="remote-video" playsinline autoplay muted width="500"></video>
+    <%= for uuid <- @connected_users do %>
+      <video id="video-remote-<%= uuid %>" playsinline autoplay width="500"></video>
+    <% end %>
 
-    <button phx-click="join-call" phx-hook="Call">Join Call</button>
-    <button phx-click="leave-call" <%= if !@in_call?, do: "disabled" %>>Hang Up</button>
+    <div>
+      <button phx-click="start_call" phx-hook="StartCall">Start Call</button>
+      <button phx-click="join_call" phx-hook="JoinCall">Join Call</button>
+      <button phx-click="leave_call">Hang Up</button>
+    </div>
     """
   end
 
@@ -44,9 +43,15 @@ defmodule LittlechatWeb.Room.ShowLive do
   def mount(%{"slug" => slug}, _session, socket) do
     # User presence tracking.
     user = create_connected_user()
-    # This PubSub subscription will also handle "video-offer" and other events
-    # from the users.
+
+    # This PubSub subscription will also handle other events from the users.
     Phoenix.PubSub.subscribe(Littlechat.PubSub, "room:" <> slug)
+
+    # This PubSub subscription will allow the user to receive messages from
+    # other users.
+    Phoenix.PubSub.subscribe(Littlechat.PubSub, "room:" <> slug <> ":" <> user.uuid)
+
+    # Track the connecting user with the `room:slug` topic.
     {:ok, _} = Presence.track(self(), "room:" <> slug, user.uuid, %{})
 
     {:ok,
@@ -54,30 +59,38 @@ defmodule LittlechatWeb.Room.ShowLive do
       |> assign(:slug, slug)
       |> assign(:user, create_connected_user())
       |> assign(:connected_users, [])
-      |> assign(:users_in_call, [])
-      |> assign(:video_offers, [])
-      |> assign(:in_call?, false)
-      |> assign(:incoming_call?, false)
       |> assign(:room, Organizer.get_room(slug))
     }
   end
 
   @impl true
-  def handle_event("join-call", params, socket) do
-    other_users = socket.assigns.connected_users |> List.delete(socket.assigns.user)
-
-    {:noreply, assign(socket, :in_call?, true)}
+  def handle_event("start_call", _params, socket) do
+    {:noreply, socket}
   end
 
-  def handle_event("video-offer", %{"sdp" => sdp}, socket) do
-    # Send to others.
-    LittlechatWeb.Endpoint.broadcast_from(
-      self(),
-      "room:" <> socket.assigns.slug,
-      "video_offer",
+  @impl true
+  def handle_event("join_call", _params, socket) do
+    {:noreply, socket}
+  end
+
+  @impl true
+  def handle_event("leave_call", _params, socket) do
+    {:noreply, socket}
+  end
+
+
+  @doc """
+  Message sent from the client's JS once an offer.
+  """
+  def handle_event("send_video_offer", %{"sdp" => sdp, "targetUser" => target_user}, socket) do
+    send_direct_message(
+      socket.assigns.slug,
+      target_user,
+      "incoming_video_offer",
       %{
         sdp: sdp,
-        from_user: socket.assigns.user
+        from_user: socket.assigns.user,
+        to_user: target_user
       }
     )
 
@@ -85,21 +98,32 @@ defmodule LittlechatWeb.Room.ShowLive do
   end
 
   @impl true
-  def handle_event("leave-call", params, socket) do
-    {:noreply, assign(socket, :in_call?, false)}
+  def handle_event("send_video_answer", %{"sdp" => sdp, "targetUser" => target_user}, socket) do
+    send_direct_message(
+      socket.assigns.slug,
+      target_user,
+      "send_video_answer",
+      %{
+        sdp: sdp,
+        from_user: socket.assigns.user,
+        to_user: target_user
+      }
+    )
   end
 
   @impl true
-  def handle_info(%Broadcast{event: "video_offer", payload: %{sdp: sdp, from_user: from_user} = offer}, socket) do
-    if from_user == socket.assigns.user do
-      {:noreply, socket}
-    else
-      {:noreply,
-        socket
-        |> assign(:incoming_call?, true)
-        |> assign(:video_offers, socket.assigns.video_offers ++ [offer])
-      }
-    end
+  def handle_event("incoming_video_answer", %{}, socket) do
+    {:noreply, socket}
+  end
+
+  @impl true
+  def handle_info(%Broadcast{event: "incoming_video_offer", payload: %{sdp: sdp, from_user: from_user} = offer}, socket) do
+    {:noreply, socket}
+  end
+
+  @impl true
+  def handle_info(%Broadcast{event: "incoming_video_answer", payload: %{sdp: sdp, from_user: from_user} = offer}, socket) do
+    {:noreply, socket}
   end
 
   @impl true
@@ -116,5 +140,14 @@ defmodule LittlechatWeb.Room.ShowLive do
   defp list_present(socket) do
     Presence.list("room:" <> socket.assigns.slug)
     |> Enum.map(fn {k, _} -> k end)
+  end
+
+  defp send_direct_message(slug, to_user, event, payload) do
+    LittlechatWeb.Endpoint.broadcast_from(
+      self(),
+      "room:" <> slug <> ":" <> to_user,
+      event,
+      payload
+    )
   end
 end

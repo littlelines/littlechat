@@ -9,11 +9,12 @@ defmodule Littlechat.Room do
   schema "rooms" do
     field :title, :string
     field :slug, :string
+    field :active_call, :boolean
 
     timestamps()
   end
 
-  @fields [:title, :slug]
+  @fields [:title, :slug, :active_call]
 
   def changeset(room, attrs) do
     room

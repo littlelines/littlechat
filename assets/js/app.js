@@ -16,44 +16,88 @@ import "phoenix_html"
 import {Socket} from "phoenix"
 import NProgress from "nprogress"
 import {LiveSocket} from "phoenix_live_view"
+import regeneratorRuntime from "regenerator-runtime"
 
 let csrfToken = document.querySelector("meta[name='csrf-token']").getAttribute("content")
 
-var onIceCandidate = (connection, e) => {
+var peerConnections = [];
+var localStream = null;
 
+var createPeerConnection = (lv, targetUser) => {
+  let newPeerConnection = new RTCPeerConnection({
+    iceServers: [
+      { urls: "stun:stun.l.google.com:19302" }
+    ]
+  })
+
+  // Add new peer connection to our peer connections array.
+  peerConnections.push(newPeerConnection)
+
+  newPeerConnection.onicecandidate = async ({candidate}) => {
+    console.log(candidate, targetUser)
+    lv.pushEvent("send_ice_candidate", {candidate, targetUser})
+  }
+
+  newPeerConnection.onnegotiationneeded = async () => {
+    try {
+      await newPeerConnection.setLocalDescription(await newPeerConnection.createOffer())
+      let sdp = newPeerConnection.localDescription()
+      lv.pushEvent("send_video_offer", {targetUser, sdp})
+    }
+    catch (error) { 
+      console.log(error)
+    }
+  }
+
+  newPeerConnection.ontrack = async (event) => {
+    document.getElementById(`video-remote-${targetUser}`).srcObject = event.streams[0]
+  }
+
+  // Add each local track to the RTCPeerConnection.
+  // localStream.getTracks().forEach(track => newPeerConnection.addTrack(track, localStream))
+
+  return newPeerConnection;
 }
 
-var createRTCPeerConnection = () => {
-  return new RTCPeerConnection({})
-  // connection.addEventListener("icecandidate", e => onIceCandidate(connection, e))
+// Add each local track to the given RTCPeerConnection.
+var addTracksToPeerConnection = (peerConnection) => {
+  localStream.getTracks().forEach(track => peerConnection.addTrack(track, localStream))
 }
 
 let Hooks = {}
-Hooks.Call = {
+Hooks.StartCall = {
   mounted() {
     this.el.addEventListener("click", e => {
-      let myConnection = createRTCPeerConnection()
+      // let myConnection = createPeerConnection()
       // Grabs local stream from the local computer.
       window.navigator.mediaDevices.getUserMedia({audio: true, video: true})
         .then(stream => {
+          localStream = stream;
           document.getElementById("local-video").srcObject = stream
-          // Add each local track to the local RTCPeerConnection.
-          stream.getTracks().forEach(track => myConnection.addTrack(track, stream))
+          // Add each local track to the RTCPeerConnection.
+          // stream.getTracks().forEach(track => myConnection.addTrack(track, stream))
           // Create the offer
-          myConnection.createOffer()
-            .then(offer => {
-              console.log(offer.sdp)
-              this.pushEvent("video-offer", {sdp: offer.sdp})
-            })
-            .catch(err => { console.log(err) })
+          // myConnection.createOffer()
+          //   .then(offer => {
+          //     // Sends ICE candidate SDP info to the server to be passed on to the other users.
+          //     myConnection.setLocalDescription(offer)
+          //     this.pushEvent("send_video_offer", {sdp: offer.sdp, targetUser: "test"})
+          //   })
+          //   .catch(err => { console.log(err) })
         })
         .catch(reason => {
           console.log(reason)
         })
-
-      console.log("clicked")
     })
   }
+}
+
+Hooks.JoinCall = {
+
+}
+
+Hooks.SetupPeer = {
+
 }
 
 let liveSocket = new LiveSocket("/live", Socket, {hooks: Hooks, params: {_csrf_token: csrfToken}})
