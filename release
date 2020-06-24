@@ -1,0 +1,2 @@
+source .env
+MIX_ENV=prod mix do phx.digest, distillery.release
