@@ -95,11 +95,6 @@ defmodule LittlechatWeb.Room.ShowLive do
   end
 
   @impl true
-  def handle_event("start_call", params, socket) do
-    {:noreply, socket}
-  end
-
-  @impl true
   @doc """
   Called when the user clicks the "Join Call" button. This sends a request to
   each of the `@connected_users` with the event "request_offers".
