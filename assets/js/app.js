@@ -80,22 +80,26 @@ var createPeerConnection = (lv, fromUser, sdp) => {
     lv.pushEvent("new_ice_candidate", {toUser: fromUser, candidate})
   }
 
-  newPeerConnection.onnegotiationneeded = async () => {
-    try {
-      newPeerConnection.createOffer()
-        .then((offer) => { 
-          newPeerConnection.setLocalDescription(offer)
-          console.log("Sending this offer to the requester:", offer)
-          lv.pushEvent("new_sdp_offer", {toUser: fromUser, description: offer})
-        })
-        .catch((err) => console.log(err))
-      // newPeerConnection.setLocalDescription(await newPeerConnection.createOffer())
-      // let description = newPeerConnection.localDescription
-      // console.log(description)
-      // lv.pushEvent("new_sdp_offer", {toUser: fromUser, description})
-    }
-    catch (error) { 
-      console.log(error)
+  // Don't add the `onnegotiationneeded` callback when creating an answer due to
+  // a bug in Chrome.
+  if (sdp === undefined) {
+    newPeerConnection.onnegotiationneeded = async () => {
+      try {
+        newPeerConnection.createOffer()
+          .then((offer) => { 
+            newPeerConnection.setLocalDescription(offer)
+            console.log("Sending this OFFER to the requester:", offer)
+            lv.pushEvent("new_sdp_offer", {toUser: fromUser, description: offer})
+          })
+          .catch((err) => console.log(err))
+        // newPeerConnection.setLocalDescription(await newPeerConnection.createOffer())
+        // let description = newPeerConnection.localDescription
+        // console.log(description)
+        // lv.pushEvent("new_sdp_offer", {toUser: fromUser, description})
+      }
+      catch (error) { 
+        console.log(error)
+      }
     }
   }
 
@@ -107,17 +111,10 @@ var createPeerConnection = (lv, fromUser, sdp) => {
   return newPeerConnection;
 }
 
-// Add each local track to the given RTCPeerConnection.
-var addTracksToPeerConnection = (peerConnection) => {
-  localStream.getTracks().forEach(track => peerConnection.addTrack(track, localStream))
-}
-
 let Hooks = {}
 Hooks.JoinCall = {
   mounted () {
     initStream()
-    // this.el.addEventListener("click", e => {
-    // })
   }
 }
 
