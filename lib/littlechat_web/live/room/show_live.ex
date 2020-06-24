@@ -61,7 +61,7 @@ defmodule LittlechatWeb.Room.ShowLive do
 
     <div>
       <button phx-click="join_call" phx-hook="JoinCall">Join Call</button>
-      <button phx-click="leave_call">Hang Up</button>
+      <%= link "Leave Meeting", to: Routes.room_new_path(@socket, :new), class: "button" %>
     </div>
     """
   end
