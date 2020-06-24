@@ -15,7 +15,8 @@ defmodule Littlechat.Application do
       {Phoenix.PubSub, name: Littlechat.PubSub},
       # Start the Endpoint (http/https)
       LittlechatWeb.Presence,
-      LittlechatWeb.Endpoint
+      LittlechatWeb.Endpoint,
+      LittlechatWeb.Stun
       # Start a worker by calling: Littlechat.Worker.start_link(arg)
       # {Littlechat.Worker, arg}
     ]

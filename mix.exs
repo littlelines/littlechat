@@ -57,7 +57,8 @@ defmodule Littlechat.MixProject do
       {:jason, "~> 1.0"},
       {:plug_cowboy, "~> 2.0"},
       {:uuid, "~> 1.1"},
-      {:distillery, "~> 2.0"}
+      {:distillery, "~> 2.0"},
+      {:stun, "~> 1.0"} # See https://github.com/processone/ejabberd/issues/1107#issuecomment-217828211 if you have errors installing this on macOS.
     ]
   end
 

@@ -54,7 +54,7 @@ var removeUserConnection = (userUuid) => {
 var createPeerConnection = (lv, fromUser, sdp) => {
   let newPeerConnection = new RTCPeerConnection({
     iceServers: [
-      { urls: "stun:stun.l.google.com:19302" }
+      { urls: "stun:littlechat.jesse.codes:3478" }
     ]
   })
   users[fromUser].peerConnection = newPeerConnection;
