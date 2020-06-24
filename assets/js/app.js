@@ -92,10 +92,6 @@ var createPeerConnection = (lv, fromUser, sdp) => {
             lv.pushEvent("new_sdp_offer", {toUser: fromUser, description: offer})
           })
           .catch((err) => console.log(err))
-        // newPeerConnection.setLocalDescription(await newPeerConnection.createOffer())
-        // let description = newPeerConnection.localDescription
-        // console.log(description)
-        // lv.pushEvent("new_sdp_offer", {toUser: fromUser, description})
       }
       catch (error) { 
         console.log(error)
@@ -196,12 +192,3 @@ liveSocket.connect()
 // >> liveSocket.enableDebug()
 // >> liveSocket.enableLatencySim(1000)
 window.liveSocket = liveSocket
-
-// var socket = new Socket("/socket", {})
-// var channel = socket.channel("call:" + window.roomSlug, {})
-// channel.join()
-//   .receive("ok", resp => { console.log("joined!") })
-
-// channel.on("call-request", payload => {
-//   console.log("SENT: call-request")
-// })
