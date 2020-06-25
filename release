@@ -1,2 +1,4 @@
 source .env
+MIX_ENV=prod mix compile
+npm run deploy --prefix assets
 MIX_ENV=prod mix do phx.digest, distillery.release
