@@ -61,7 +61,9 @@ config :littlechat, LittlechatWeb.Endpoint,
   server: true,
   check_origin: false,
   root: ".",
-  version: Application.spec(:littlechat, :vsn)
+  version: Application.spec(:littlechat, :vsn),
+  secret_key_base: System.get_env("SECRET_KEY_BASE"),
+  live_view: [signing_salt: System.get_env("LIVEVIEW_SIGNING_SALT")]
 
 config :littlechat, Littlechat.Repo,
   hostname: System.get_env("DATABASE_HOSTNAME"),
@@ -69,3 +71,10 @@ config :littlechat, Littlechat.Repo,
   password: System.get_env("DATABASE_PASSWORD"),
   pool_size: System.get_env("DATABASE_POOL_SIZE") || 10,
   database: System.get_env("DATABASE_NAME")
+
+
+config :littlechat, Littlechat.Repo,
+  adapter: Ecto.Adapters.Postgres,
+  url: "${DATABASE_URL}",
+  ssl: true,
+  pool_size: 2
