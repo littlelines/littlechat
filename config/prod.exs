@@ -63,7 +63,7 @@ config :littlechat, LittlechatWeb.Endpoint,
   root: ".",
   version: Application.spec(:littlechat, :vsn),
   secret_key_base: System.get_env("SECRET_KEY_BASE"),
-  live_view: [signing_salt: System.get_env("LIVEVIEW_SIGNING_SALT")]
+  live_view: [signing_salt: "${LIVEVIEW_SIGNING_SALT}"]
 
 config :littlechat, Littlechat.Repo,
   hostname: System.get_env("DATABASE_HOSTNAME"),
