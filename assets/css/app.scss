@@ -94,3 +94,12 @@
 #local-video {
   transform: rotateY(180deg);
 }
+
+.streams {
+  display: flex;
+  flex-wrap: wrap;
+
+  video {
+    width: 50%;
+  }
+}

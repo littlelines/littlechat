@@ -29,11 +29,13 @@ defmodule LittlechatWeb.Room.ShowLive do
     <% end %>
     </ul>
 
-    <video id="local-video" playsinline autoplay muted width="500"></video>
+    <div class="streams">
+      <video id="local-video" playsinline autoplay muted></video>
 
-    <%= for uuid <- @connected_users do %>
-      <video id="video-remote-<%= uuid %>" data-user-uuid="<%= uuid %>" playsinline autoplay width="500" phx-hook="InitUser"></video>
-    <% end %>
+      <%= for uuid <- @connected_users do %>
+        <video id="video-remote-<%= uuid %>" data-user-uuid="<%= uuid %>" playsinline autoplay phx-hook="InitUser"></video>
+      <% end %>
+    </div>
 
     <div id="sdp-offers">
       <%= for sdp_offer <- @sdp_offers do %>
