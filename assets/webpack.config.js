@@ -40,6 +40,10 @@ module.exports = (env, options) => {
             'css-loader',
             'sass-loader',
           ],
+        },
+        {
+          test: /\.(svg|eot|woff|woff2|ttf)$/,
+          use: ['file-loader']
         }
       ]
     },

@@ -1,6 +1,272 @@
 /* This file is for your main application css. */
-@import "./phoenix.css";
+// @import "./phoenix.css";
 @import "../node_modules/nprogress/nprogress.css";
+@import "./reset.scss";
+@import "./variables.scss";
+
+html, body {
+  min-height: 100%;
+}
+
+body {
+  color: var(--light-gray);
+  background: var(--black);
+  display: flex;
+  flex-direction: column;
+  justify-content: stretch;
+  min-height: 100vh;
+  > div {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+  }
+}
+
+a {
+  color: currentColor;
+  text-decoration: none;
+}
+
+.header, .footer {
+  align-items: center;
+  color: var(--gray);
+  display: flex;
+  background: var(--light-gray);
+  padding: 1rem 2vmin;
+}
+
+.footer {
+  justify-content: center;
+}
+
+.main {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: stretch;
+  flex-grow: 1;
+  padding: 2vmin;
+  &--new-room {
+    align-items: center;
+    color: var(--black);
+    font-style: normal;
+    background: var(--white);
+    padding: 5vmin;
+    padding-top: 10vmin;
+    @media #{$large-up} {
+      margin-right: 25%;
+      padding-right: 10vmin;
+    }
+    @media #{$xlarge-up} {
+      margin-right: 50%;
+    }
+  }
+}
+.title {
+  font-size: 4rem;
+  margin-bottom: 4rem;
+}
+.form {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  flex-direction: column;
+  width: 100%;
+  @media #{$large-up} {
+    width: 80%;
+  }
+}
+.label {
+  font-size: 1rem;
+  margin-bottom: 1rem;
+  width: 100%;
+}
+input::placeholder {
+  vertical-align: middle;
+}
+.input, .button {
+  font-size: 1.5rem;
+  border: none;
+  border-radius: 5px;
+  margin-bottom: 2rem;
+  max-width: 100%;
+  padding: 2vmin;
+  apperance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+}
+.input {
+  border: 2px solid var(--blue);
+  margin-top: .5rem;
+  width: 100%;
+}
+.button {
+  background: var(--blue);
+  color: var(--white);
+  width: 100%;
+  @media #{$xlarge-up} {
+    padding: 2vmin 20%;
+    width: auto;
+  }
+}
+.nav {
+  display: flex;
+  align-items: center;
+  flex-grow: 1;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  &__title {
+    font-size: 1.125rem;
+    padding: .5rem;
+  }
+  ul {
+    display: flex;
+    li {
+      display: inline-block;
+      padding: .5rem 0;
+      vertical-align: middle;
+      &::after {
+        background: currentColor;
+        content: "";
+        display: inline-block;
+        height: 1.25rem;
+        margin: 0 1rem;
+        vertical-align: middle;
+        width: 1px;
+      }
+      &:last-of-type::after {
+        content: none;
+      }
+    }
+  }
+}
+.streams {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  justify-content: space-evenly;
+  align-items: center;
+  &--shrink {
+    .video-container {
+      flex-basis: calc(33.333333% - 3vmin) !important;
+    }
+  }
+}
+.video-container {
+  $base: &;
+  background-color: currentColor;
+  border-radius: 0.625rem;
+  border: 3px solid var(--dark-gray);
+  overflow: hidden;
+  position: relative;
+  flex-basis: calc(50% - 2vmin);
+  margin-bottom: 2vmin;
+  margin-left: 1vmin;
+  margin-right: 1vmin;
+  &::before {
+    color: var(--light-gray);
+    content: "Waiting for user to join";
+    font-size: 3vmin;
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 3vmin;
+  }
+  &--current {
+    &::before {
+      content: "Join Call";
+    }
+  }
+  &:nth-child(1n) {
+    color: var(--purple);
+  }
+  &:nth-child(2n) {
+    color: var(--blue);
+  }
+  &:nth-child(3n) {
+    color: var(--yellow);
+  }
+  &:nth-child(4n) {
+    color: var(--magenta);
+  }
+  &__controls {
+    align-items: flex-end;
+    justify-content: center;
+    flex-direction: row;
+    padding-bottom: 2rem;
+    position: absolute;
+    bottom: 0;
+    top: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    width: 100%;
+    z-index: 2;
+    &:hover {
+      .video-container__control {
+        visibility: visible;
+      }
+    }
+  }
+  &__control {
+    visibility: hidden;
+    margin-right: 1rem;
+    apperance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    border: none;
+    border-radius: 100%;
+    cursor: pointer;
+    color: var(--light-gray);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    outline: none;
+    font-size: 1.75rem;
+    line-height: 1;
+    height: 4rem;
+    width: 4rem;
+    padding: 0;
+    &:last-child {
+      margin-right: 0;
+    }
+  }
+  #join-call {
+    background: green;
+    &:hover {
+      background: darken(green, 5%);
+    }
+    &::after {
+      background-color: rgba(0,0,0,0);
+      content: "";
+      cursor: pointer;
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 2;
+    }
+  }
+  #leave-call {
+    background: red;
+    z-index: 3;
+    &:hover {
+      background: darken(red, 5%);
+    }
+  }
+  video {
+    position: relative;
+    width: 100%;
+    z-index: 2;
+  }
+}
 
 /* LiveView specific classes for your customizations */
 .invalid-feedback {
@@ -64,9 +330,7 @@
 /* Alerts and form errors */
 .alert {
   padding: 15px;
-  margin-bottom: 20px;
   border: 1px solid transparent;
-  border-radius: 4px;
 }
 .alert-info {
   color: #31708f;
@@ -93,13 +357,4 @@
 // Rotate the video to give a "mirrored" appearance. Feels more natural.
 #local-video {
   transform: rotateY(180deg);
-}
-
-.streams {
-  display: flex;
-  flex-wrap: wrap;
-
-  video {
-    width: 50%;
-  }
 }

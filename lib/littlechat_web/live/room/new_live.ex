@@ -7,19 +7,28 @@ defmodule LittlechatWeb.Room.NewLive do
   @impl true
   def render(assigns) do
     ~L"""
-    <h1>Create a New Room</h1>
+    <main class="main main--new-room">
+      <%= form_for @changeset, "#", [phx_change: "validate", phx_submit: "save", class: "form"], fn f -> %>
+        <h1 class="title">Littlechat</h1>
 
-    <div>
-      <%= form_for @changeset, "#", [phx_change: "validate", phx_submit: "save"], fn f -> %>
-        <%= text_input f, :title, placeholder: "Title" %>
-        <%= error_tag f, :title %>
+        <label class="label">
+          Session Name:
+          <%= text_input f, :title, placeholder: "Example Room", class: "input" %>
+          <%= error_tag f, :title %>
+        </label>
 
-        <%= text_input f, :slug, placeholder: "room-slug" %>
-        <%= error_tag f, :slug %>
+        <label class="label">
+          Session ID:
+          <%= text_input f, :slug, placeholder: "ABC1234", class: "input" %>
+          <%= error_tag f, :slug %>
+        </label>
 
-        <%= submit "Save" %>
+        <%= submit "Start Call", class: "button" %>
       <% end %>
-    </div>
+    </main>
+    <footer class="footer">
+      <p>A fun side-project of the ruby &amp; elixir consulting firm Littlelines, LLC in Ohio &copy;2020</p>
+    </footer>
     """
   end
 

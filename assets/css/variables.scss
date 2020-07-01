@@ -1,0 +1,43 @@
+:root {
+  --black: #111111;
+  --dark-gray: #232323;
+  --gray: #666666;
+  --light-gray: #F3F3F3;
+  --white: #FFFFFF;
+  --purple: #660099;
+  --blue: #0099FF;
+  --yellow: #EDB500;
+  --magenta: #CC0066;
+}
+
+
+////////////////////
+// Media Breakpoints
+////////////////////
+$screen: "screen";
+$breakpoint-small: 576px !default;
+$breakpoint-medium: 768px !default;
+$breakpoint-large: 992px !default;
+$breakpoint-xlarge: 1200px !default;
+$breakpoint-xxlarge: 1400px !default;
+
+////////////////////
+// Media Queries
+////////////////////
+$screen: "only screen";
+
+$small-only: "#{$screen} and (max-width: #{$breakpoint-medium})";
+
+$small-up: "#{$screen} and (max-width: #{$breakpoint-small})";
+
+$medium-up: "#{$screen} and (min-width: #{$breakpoint-medium})";
+
+$medium-only: "#{$screen} and (min-width: #{$breakpoint-medium}) and (max-width: #{$breakpoint-large})";
+
+$large-up: "#{$screen} and (min-width: #{$breakpoint-large})";
+
+$large-only: "#{$screen} and (min-width: #{$breakpoint-large}) and (max-width: #{$breakpoint-xlarge})";
+
+$xlarge-up: "#{$screen} and (min-width: #{$breakpoint-xlarge})";
+
+$xxlarge-up: "#{$screen} and (min-width: #{$breakpoint-xxlarge})";

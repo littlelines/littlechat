@@ -18,6 +18,7 @@ defmodule LittlechatWeb.Room.ShowLive do
     window.roomSlug = "<%= @room.slug %>";
     </script>
 
+    <!--
     <h1><%= @room.title %></h1>
 
     <p>Me: <%= @user.uuid %></p>
@@ -28,43 +29,72 @@ defmodule LittlechatWeb.Room.ShowLive do
       <li><%= uuid %></li>
     <% end %>
     </ul>
+    -->
+    <header class="header">
+      <nav role="navigation" class="nav">
+        <%= link to: Routes.room_new_path(@socket, :new), class: "nav__title" do %>
+          Littlechat
+        <% end %>
+        <ul>
+          <%= if function_exported?(Routes, :live_dashboard_path, 2) do %>
+            <li><%= link "LiveDashboard", to: Routes.live_dashboard_path(@socket, :home) %></li>
+          <% end %>
+          <li>Session Name: <%= @room.title %></li>
+          <li><%= length(@connected_users) + 1 %> users in session</li>
+        </ul>
+      </nav>
+    </header>
+    <main role="main" class="main">
+      <div class="streams <%= if (length(@connected_users) > 3) do 'streams--shrink' end %>">
+        <div class="video-container video-container--current">
+          <video id="local-video" playsinline autoplay muted></video>
+          <div class="video-container__controls">
+            <button id="join-call" phx-click="join_call" phx-hook="JoinCall" class="video-container__control"><i class="fas fa-fw fa-phone"></i></button>
+            <%= link to: Routes.room_new_path(@socket, :new), id: "leave-call", class: "video-container__control" do %>
+              <i class="fas fa-fw fa-phone-slash"></i>
+            <% end %>
+          </div>
+        </div>
 
-    <div class="streams">
-      <video id="local-video" playsinline autoplay muted></video>
-
-      <%= for uuid <- @connected_users do %>
-        <video id="video-remote-<%= uuid %>" data-user-uuid="<%= uuid %>" playsinline autoplay phx-hook="InitUser"></video>
-      <% end %>
-    </div>
-
-    <div id="sdp-offers">
-      <%= for sdp_offer <- @sdp_offers do %>
+        <%= for uuid <- @connected_users do %>
+        <div class="video-container">
+          <video id="video-remote-<%= uuid %>" data-user-uuid="<%= uuid %>" playsinline autoplay phx-hook="InitUser"></video>
+        </div>
+        <% end %>
+      </div>
+      <div id="sdp-offers">
+        <%= for sdp_offer <- @sdp_offers do %>
         <span phx-hook="HandleSdpOffer" data-from-user-uuid="<%= sdp_offer["from_user"] %>" data-sdp="<%= sdp_offer["description"]["sdp"] %>"></span>
-      <% end %>
-    </div>
+        <% end %>
+      </div>
 
-    <div id="sdp-answers">
-      <%= for answer <- @answers do %>
+      <div id="sdp-answers">
+        <%= for answer <- @answers do %>
         <span phx-hook="HandleAnswer" data-from-user-uuid="<%= answer["from_user"] %>" data-sdp="<%= answer["description"]["sdp"] %>"></span>
-      <% end %>
-    </div>
+        <% end %>
+      </div>
 
-    <div id="ice-candidates">
-      <%= for ice_candidate_offer <- @ice_candidate_offers do %>
+      <div id="ice-candidates">
+        <%= for ice_candidate_offer <- @ice_candidate_offers do %>
         <span phx-hook="HandleIceCandidateOffer" data-from-user-uuid="<%= ice_candidate_offer["from_user"] %>" data-ice-candidate="<%= Jason.encode!(ice_candidate_offer["candidate"]) %>"></span>
-      <% end %>
-    </div>
+        <% end %>
+      </div>
 
-    <div id="offer-requests">
-      <%= for request <- @offer_requests do %>
+      <div id="offer-requests">
+        <%= for request <- @offer_requests do %>
         <span phx-hook="HandleOfferRequest" data-from-user-uuid="<%= request.from_user.uuid %>"></span>
-      <% end %>
-    </div>
+        <% end %>
+      </div>
+    </main>
+    <footer class="footer">
+      <p>A fun side-project of the ruby &amp; elixir consulting firm Littlelines, LLC in Ohio &copy;2020</p>
+    </footer>
 
-    <div>
-      <button phx-click="join_call" phx-hook="JoinCall">Join Call</button>
-      <%= link "Leave Meeting", to: Routes.room_new_path(@socket, :new), class: "button" %>
-    </div>
+
+
+
+
+
     """
   end
 
