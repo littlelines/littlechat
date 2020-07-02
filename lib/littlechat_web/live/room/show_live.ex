@@ -33,7 +33,7 @@ defmodule LittlechatWeb.Room.ShowLive do
     <header class="header">
       <nav role="navigation" class="nav">
         <%= link to: Routes.room_new_path(@socket, :new), class: "nav__title" do %>
-          Littlechat
+          <%= img_tag(Routes.static_path(@socket, "/images/littlechat-logo.svg"), class: "logo") %>
         <% end %>
         <ul>
           <%= if function_exported?(Routes, :live_dashboard_path, 2) do %>
