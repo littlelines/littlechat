@@ -9,7 +9,7 @@ defmodule LittlechatWeb.Room.NewLive do
     ~L"""
     <main class="main main--new-room">
       <%= form_for @changeset, "#", [phx_change: "validate", phx_submit: "save", class: "form"], fn f -> %>
-        <h1 class="title">Littlechat</h1>
+        <h1 class="title"><%= img_tag(Routes.static_path(@socket, "/images/littlechat-logo.svg"), class: "logo logo--large", alt: "Littlechat") %></h1>
 
         <label class="label">
           Room Name:
