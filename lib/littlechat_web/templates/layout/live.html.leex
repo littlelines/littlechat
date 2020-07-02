@@ -1,11 +1,13 @@
-<main role="main" class="container">
-  <p class="alert alert-info" role="alert"
-    phx-click="lv:clear-flash"
-    phx-value-key="info"><%= live_flash(@flash, :info) %></p>
+<p class="alert alert-info" role="alert"
+   phx-click="lv:clear-flash"
+   phx-value-key="info"><%= live_flash(@flash, :info) %></p>
 
-  <p class="alert alert-danger" role="alert"
-    phx-click="lv:clear-flash"
-    phx-value-key="error"><%= live_flash(@flash, :error) %></p>
+<p class="alert alert-danger" role="alert"
+   phx-click="lv:clear-flash"
+   phx-value-key="error"><%= live_flash(@flash, :error) %></p>
 
-  <%= @inner_content %>
-</main>
+<%= @inner_content %>
+
+<footer class="footer">
+  <p>A fun Phoenix and WebRTC side-project of the Ruby &amp; Elixir consulting firm Littlelines, LLC in Ohio &copy;2020</p>
+</footer>

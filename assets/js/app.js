@@ -2,6 +2,8 @@
 // The MiniCssExtractPlugin is used to separate it out into
 // its own CSS file.
 import "../css/app.scss"
+import '../node_modules/@fortawesome/fontawesome-free/css/all.css';
+import '../node_modules/@fortawesome/fontawesome-free/js/all.js';
 
 // webpack automatically bundles all modules in your
 // entry points. Those entry points can be configured
@@ -66,7 +68,7 @@ var createPeerConnection = (lv, fromUser, sdp) => {
   if (sdp != undefined) {
     newPeerConnection.setRemoteDescription({type: "offer", sdp: sdp})
     newPeerConnection.createAnswer()
-      .then((answer) => { 
+      .then((answer) => {
         newPeerConnection.setLocalDescription(answer)
         console.log("Sending this ANSWER to the requester:", answer)
         lv.pushEvent("new_answer", {toUser: fromUser, description: answer})
@@ -86,14 +88,14 @@ var createPeerConnection = (lv, fromUser, sdp) => {
     newPeerConnection.onnegotiationneeded = async () => {
       try {
         newPeerConnection.createOffer()
-          .then((offer) => { 
+          .then((offer) => {
             newPeerConnection.setLocalDescription(offer)
             console.log("Sending this OFFER to the requester:", offer)
             lv.pushEvent("new_sdp_offer", {toUser: fromUser, description: offer})
           })
           .catch((err) => console.log(err))
       }
-      catch (error) { 
+      catch (error) {
         console.log(error)
       }
     }
@@ -149,7 +151,7 @@ Hooks.HandleSdpOffer = {
 
     if (sdp != "") {
       console.log("new sdp OFFER from", data.fromUserUuid, data.sdp)
-      
+
       createPeerConnection(this, fromUser, sdp)
     }
   }
