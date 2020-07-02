@@ -40,7 +40,7 @@ defmodule LittlechatWeb.Room.ShowLive do
             <li><%= link "LiveDashboard", to: Routes.live_dashboard_path(@socket, :home) %></li>
           <% end %>
           <li>Session Name: <%= @room.title %></li>
-          <li><%= length(@connected_users) + 1 %> users in session</li>
+          <li><%= length(@connected_users) + 1 %> users in Room</li>
         </ul>
       </nav>
     </header>
@@ -86,15 +86,6 @@ defmodule LittlechatWeb.Room.ShowLive do
         <% end %>
       </div>
     </main>
-    <footer class="footer">
-      <p>A fun side-project of the ruby &amp; elixir consulting firm Littlelines, LLC in Ohio &copy;2020</p>
-    </footer>
-
-
-
-
-
-
     """
   end
 

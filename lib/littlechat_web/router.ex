@@ -17,7 +17,7 @@ defmodule LittlechatWeb.Router do
   scope "/", LittlechatWeb do
     pipe_through :browser
 
-    live "/", Room.NewLive, :new
+    live "/", PageLive, :index
 
     scope "/room", as: :room do
       live "/new", Room.NewLive, :new

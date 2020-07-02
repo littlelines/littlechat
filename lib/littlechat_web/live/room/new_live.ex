@@ -12,23 +12,20 @@ defmodule LittlechatWeb.Room.NewLive do
         <h1 class="title">Littlechat</h1>
 
         <label class="label">
-          Session Name:
+          Room Name:
           <%= text_input f, :title, placeholder: "Example Room", class: "input" %>
           <%= error_tag f, :title %>
         </label>
 
         <label class="label">
-          Session ID:
-          <%= text_input f, :slug, placeholder: "ABC1234", class: "input" %>
+          Room ID:
+          <%= text_input f, :slug, placeholder: "my-room-123", class: "input" %>
           <%= error_tag f, :slug %>
         </label>
 
         <%= submit "Start Call", class: "button" %>
       <% end %>
     </main>
-    <footer class="footer">
-      <p>A fun side-project of the ruby &amp; elixir consulting firm Littlelines, LLC in Ohio &copy;2020</p>
-    </footer>
     """
   end
 
