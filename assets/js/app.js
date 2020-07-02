@@ -24,8 +24,7 @@ import adapter from "webrtc-adapter"
 let csrfToken = document.querySelector("meta[name='csrf-token']").getAttribute("content")
 
 var users = {}
-var peerConnections = []
-var localStream = null
+var localStream
 
 async function initStream() {
   try {
@@ -37,8 +36,8 @@ async function initStream() {
   }
 }
 
-var addUserConnection = (userUuid) => {
-  if (users[userUuid] === undefined && userUuid != window.userUuid) {
+function addUserConnection(userUuid) {
+  if (users[userUuid] === undefined) {
     users[userUuid] = {
       peerConnection: null
     }
@@ -47,16 +46,16 @@ var addUserConnection = (userUuid) => {
   return users;
 }
 
-var removeUserConnection = (userUuid) => {
+function removeUserConnection(userUuid) {
   delete users[userUuid]
 
   return users
 }
 
-var createPeerConnection = (lv, fromUser, sdp) => {
+function createPeerConnection(lv, fromUser, offer) {
   let newPeerConnection = new RTCPeerConnection({
     iceServers: [
-      { urls: "stun:littlechat.jesse.codes:3478" }
+      { urls: "stun:littlechat.app:3478" }
     ]
   })
   users[fromUser].peerConnection = newPeerConnection;
@@ -65,8 +64,8 @@ var createPeerConnection = (lv, fromUser, sdp) => {
   localStream.getTracks().forEach(track => newPeerConnection.addTrack(track, localStream))
 
   // If creating an answer, rather than an initial offer.
-  if (sdp != undefined) {
-    newPeerConnection.setRemoteDescription({type: "offer", sdp: sdp})
+  if (offer !== undefined) {
+    newPeerConnection.setRemoteDescription({type: "offer", sdp: offer})
     newPeerConnection.createAnswer()
       .then((answer) => {
         newPeerConnection.setLocalDescription(answer)
@@ -84,7 +83,7 @@ var createPeerConnection = (lv, fromUser, sdp) => {
 
   // Don't add the `onnegotiationneeded` callback when creating an answer due to
   // a bug in Chrome.
-  if (sdp === undefined) {
+  if (offer === undefined) {
     newPeerConnection.onnegotiationneeded = async () => {
       try {
         newPeerConnection.createOffer()
