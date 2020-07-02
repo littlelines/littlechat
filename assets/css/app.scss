@@ -63,8 +63,8 @@ a {
   }
 }
 .title {
-  font-size: 4rem;
-  margin-bottom: 4rem;
+  display: block;
+  width: 100%;
 }
 .form {
   display: flex;
@@ -117,13 +117,11 @@ input::placeholder {
   justify-content: space-between;
   &__title {
     font-size: 1.125rem;
-    padding: .5rem;
   }
   ul {
     display: flex;
     li {
       display: inline-block;
-      padding: .5rem 0;
       vertical-align: middle;
       &::after {
         background: currentColor;
@@ -137,7 +135,19 @@ input::placeholder {
       &:last-of-type::after {
         content: none;
       }
+      a {
+        padding: 1rem 0;
+      }
     }
+  }
+}
+.logo {
+  max-width: 100%;
+  width: 12rem;
+  &--large {
+    margin-bottom: 4rem;
+    max-width: 75%;
+    width: 100%;
   }
 }
 .streams {
