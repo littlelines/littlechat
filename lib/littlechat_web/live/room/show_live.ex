@@ -39,7 +39,7 @@ defmodule LittlechatWeb.Room.ShowLive do
           <%= if function_exported?(Routes, :live_dashboard_path, 2) do %>
             <li><%= link "LiveDashboard", to: Routes.live_dashboard_path(@socket, :home) %></li>
           <% end %>
-          <li>Session Name: <%= @room.title %></li>
+          <li>Room: <%= @room.title %></li>
           <li><%= length(@connected_users) + 1 %> users in Room</li>
         </ul>
       </nav>
