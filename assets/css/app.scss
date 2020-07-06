@@ -58,11 +58,18 @@ a {
     padding: 5vmin;
     padding-top: 10vmin;
     @media #{$large-up} {
-      margin-right: 25%;
-      padding-right: 10vmin;
+      // Temp adjustments to hide sidebar
+      justify-content: center;
+      padding-right: 20%;
+      padding-left: 20%;
+
+      // SAVE FOR SIDEBAR
+      // margin-right: 25%;
+      // padding-right: 10vmin;
     }
     @media #{$xlarge-up} {
-      margin-right: 50%;
+      // SAVE FOR SIDEBAR
+      // margin-right: 50%;
     }
   }
 }
