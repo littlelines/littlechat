@@ -18,18 +18,6 @@ defmodule LittlechatWeb.Room.ShowLive do
     window.roomSlug = "<%= @room.slug %>";
     </script>
 
-    <!--
-    <h1><%= @room.title %></h1>
-
-    <p>Me: <%= @user.uuid %></p>
-
-    <h3>Connected Users:</h3>
-    <ul>
-    <%= for uuid <- @connected_users do %>
-      <li><%= uuid %></li>
-    <% end %>
-    </ul>
-    -->
     <header class="header">
       <nav role="navigation" class="nav">
         <%= link to: Routes.room_new_path(@socket, :new), class: "nav__title", title: "Littlechat" do %>
