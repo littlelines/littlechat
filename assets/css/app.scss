@@ -37,6 +37,10 @@ a {
 
 .footer {
   justify-content: center;
+
+  a {
+    text-decoration: underline;
+  }
 }
 
 .main {
@@ -166,7 +170,6 @@ input::placeholder {
   $base: &;
   background-color: currentColor;
   border-radius: 0.625rem;
-  border: 3px solid var(--dark-gray);
   overflow: hidden;
   position: relative;
   flex-basis: calc(50% - 2vmin);
