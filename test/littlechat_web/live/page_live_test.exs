@@ -1,5 +1,5 @@
 defmodule LittlechatWeb.PageLiveTest do
-  use LittlechatWeb.ConnCase
+  # use LittlechatWeb.ConnCase
 
-  import Phoenix.LiveViewTest
+  # import Phoenix.LiveViewTest
 end

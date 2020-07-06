@@ -5,6 +5,21 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <%= csrf_meta_tag() %>
+
+
+    <link rel="apple-touch-icon" sizes="180x180" href="<%= Routes.static_path(@conn, "/images/apple-touch-icon.png") %>">
+    <link rel="icon" type="image/png" sizes="32x32" href="<%= Routes.static_path(@conn, "/images/favicon-32x32.png") %>">
+    <link rel="icon" type="image/png" sizes="16x16" href="<%= Routes.static_path(@conn, "/images/favicon-16x16.png") %>">
+    <link rel="manifest" href="<%= Routes.static_path(@conn, "/images/site.webmanifest") %>">
+    <link rel="shortcut icon" href="<%= Routes.static_path(@conn, "/images/favicon.ico") %>">
+    <link rel="mask-icon" href="<%= Routes.static_path(@conn, "/images/safari-pinned-tab.svg") %>" color="#326de6">
+    <meta name="apple-mobile-web-app-title" content="Littlechat">
+    <meta name="application-name" content="Littlechat">
+    <meta name="msapplication-TileColor" content="#ffc40d">
+    <meta name="msapplication-config" content="<%= Routes.static_path(@conn, "/images/browserconfig.xml") %>">
+    <meta name="theme-color" content="#ffffff">
+
+
     <%= live_title_tag assigns[:page_title] || "Littlechat", suffix: " · A Phoenix, LiveView, and WebRTC Video Chat Application" %>
     <link phx-track-static rel="stylesheet" href="<%= Routes.static_path(@conn, "/css/app.css") %>"/>
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital@0;1&display=swap" rel="stylesheet">
