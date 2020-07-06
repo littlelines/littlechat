@@ -47,6 +47,11 @@ function addUserConnection(userUuid) {
 }
 
 function removeUserConnection(userUuid) {
+  let pc = users[userUuid].peerConnection
+  if (pc !== null) {
+    pc.close()
+  }
+
   delete users[userUuid]
 
   return users
@@ -111,9 +116,7 @@ function createPeerConnection(lv, fromUser, offer) {
 let Hooks = {}
 Hooks.JoinCall = {
   mounted () {
-    this.el.addEventListener("click", e => {
-      initStream()
-    })
+    initStream()
   }
 }
 
@@ -121,12 +124,7 @@ Hooks.HandleOfferRequest = {
   mounted () {
     console.log("new offer request from", this.el.dataset.fromUserUuid)
     let fromUser = this.el.dataset.fromUserUuid
-    // 1. Create peer connection with the requesting user.
-    // 2. Adds current tracks to the peer connection.
-    // 3. Adds the peer connection to the users array for the given user.
-    // 4. Creates an offer for the given peer connection.
-    // 5. Sends all offer and ICE candidate info to the requesting user via
-    //    the `new-offer` topic.
+
     createPeerConnection(this, fromUser)
   }
 }
