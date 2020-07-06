@@ -111,7 +111,9 @@ function createPeerConnection(lv, fromUser, offer) {
 let Hooks = {}
 Hooks.JoinCall = {
   mounted () {
-    initStream()
+    this.el.addEventListener("click", e => {
+      initStream()
+    })
   }
 }
 
