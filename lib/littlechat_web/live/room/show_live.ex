@@ -89,17 +89,27 @@ defmodule LittlechatWeb.Room.ShowLive do
     # Track the connecting user with the `room:slug` topic.
     {:ok, _} = Presence.track(self(), "room:" <> slug, user.uuid, %{})
 
-    {:ok,
-      socket
-      |> assign(:slug, slug)
-      |> assign(:user, user)
-      |> assign(:ice_candidate_offers, [])
-      |> assign(:sdp_offers, [])
-      |> assign(:answers, [])
-      |> assign(:offer_requests, [])
-      |> assign(:connected_users, [])
-      |> assign(:room, Organizer.get_room(slug))
-    }
+    room = Organizer.get_room(slug)
+
+    if room do
+      {:ok,
+        socket
+        |> assign(:slug, slug)
+        |> assign(:user, user)
+        |> assign(:ice_candidate_offers, [])
+        |> assign(:sdp_offers, [])
+        |> assign(:answers, [])
+        |> assign(:offer_requests, [])
+        |> assign(:connected_users, [])
+        |> assign(:room, room)
+      }
+    else
+      {:ok,
+        socket
+        |> put_flash(:error, "That room does not exist.")
+        |> push_redirect(to: Routes.room_new_path(socket, :new))
+      }
+    end
   end
 
   @impl true
