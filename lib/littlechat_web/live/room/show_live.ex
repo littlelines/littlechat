@@ -24,9 +24,6 @@ defmodule LittlechatWeb.Room.ShowLive do
           <%= img_tag(Routes.static_path(@socket, "/images/littlechat-logo.svg"), class: "logo", alt: "Littlechat") %>
         <% end %>
         <ul>
-          <%= if function_exported?(Routes, :live_dashboard_path, 2) do %>
-            <li><%= link "LiveDashboard", to: Routes.live_dashboard_path(@socket, :home) %></li>
-          <% end %>
           <li>Room: <%= @room.title %></li>
           <li><%= length(@connected_users) + 1 %> users in Room</li>
         </ul>
