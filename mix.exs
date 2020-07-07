@@ -59,7 +59,8 @@ defmodule Littlechat.MixProject do
       {:uuid, "~> 1.1"},
       {:distillery, "~> 2.0"},
       {:stun, "~> 1.0"}, # See https://github.com/processone/ejabberd/issues/1107#issuecomment-217828211 if you have errors installing this on macOS.
-      {:sentry, "~> 8.0-rc.2"}
+      {:sentry, "~> 8.0-rc.2"},
+      {:hackney, "~> 1.8"}
     ]
   end
 
