@@ -54,11 +54,12 @@ defmodule Littlechat.MixProject do
       {:telemetry_metrics, "~> 0.4"},
       {:telemetry_poller, "~> 0.4"},
       {:gettext, "~> 0.11"},
-      {:jason, "~> 1.0"},
+      {:jason, "~> 1.1"},
       {:plug_cowboy, "~> 2.0"},
       {:uuid, "~> 1.1"},
       {:distillery, "~> 2.0"},
-      {:stun, "~> 1.0"} # See https://github.com/processone/ejabberd/issues/1107#issuecomment-217828211 if you have errors installing this on macOS.
+      {:stun, "~> 1.0"}, # See https://github.com/processone/ejabberd/issues/1107#issuecomment-217828211 if you have errors installing this on macOS.
+      {:sentry, "~> 8.0-rc.2"}
     ]
   end
 
