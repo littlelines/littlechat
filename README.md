@@ -1,5 +1,9 @@
 # Littlechat
 
+A group video chat application built with Phoenix, LiveView, and WebRTC. Want a step-by-step on how it was made? [Check out this blog post.](https://littlelines.com/blog/2020/07/06/building-a-video-chat-app-in-phoenix-liveview)
+
+## Development Environment Setup
+
 To start your Phoenix server:
 
   * Install dependencies with `mix deps.get`
@@ -12,17 +16,13 @@ Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
 
 ## Deployment
 
-Littlechat is configured to use distillery for deployments. It's configured for an easy deployment via [Gigalixir](https://gigalixir.com/):
+Littlechat is configured to use distillery for deployments. We previously had instructions here for easy deployment with Gigalixir, but unfortunately, Gigalixir doesn't allow us to open UDP port 3478 for incoming traffic, which prevents our STUN server (and thus ICE negotiation) from working. We currently run Littlechat on a Digital Ocean box, and it works great!
 
-```bash
-$ git clone https://github.com:littlelines/littlechat.git
-$ cd littlechat
-$ gigalixir create
-$ gigalixir pg:create --free # Remove --free if you need a beefier DB.
-$ gigalixir git:remote
-$ git push gigalixir master
-# ...deployed!
-```
+### Building a Release
+
+To build a release using distillery, run the `bin/release` script.
+
+Deploys on Gigalixir are not supported because it is not possible to open a port other than 80 or 443 on Gigalixir - so it's not possible to run the STUN server.
 
 The main thing you'll want to watch out for in deployments is that most browsers require HTTPS for WebRTC unless you're at localhost, so make sure you're using HTTPS.
 
