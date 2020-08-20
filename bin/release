@@ -5,4 +5,4 @@ MIX_ENV=prod mix compile
 MIX_ENV=prod npm run deploy --prefix assets
 MIX_ENV=prod mix phx.digest
 source .env
-MIX_ENV=prod mix distillery.release
+MIX_ENV=prod mix distillery.release --upgrade
