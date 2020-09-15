@@ -47,11 +47,6 @@ function addUserConnection(userUuid) {
 }
 
 function removeUserConnection(userUuid) {
-  let pc = users[userUuid].peerConnection
-  if (pc !== null) {
-    pc.close()
-  }
-
   delete users[userUuid]
 
   return users
