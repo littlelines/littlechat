@@ -57,9 +57,22 @@ defmodule Littlechat.MixProject do
       {:plug_cowboy, "~> 2.0"},
       {:uuid, "~> 1.1"},
       {:distillery, "~> 2.0"},
-      {:stun, "~> 1.0"}, # See https://github.com/processone/ejabberd/issues/1107#issuecomment-217828211 if you have errors installing this on macOS.
+      # See https://github.com/processone/ejabberd/issues/1107#issuecomment-217828211 if you have errors installing stun on macOS.
+      {:stun, "~> 1.0"},
       {:sentry, "~> 8.0-rc.2"},
       {:hackney, "~> 1.8"}
+      # install ngrok https://github.com/joshuafleck/ex_ngrok#dependencies and
+      # uncomment the ex_ngrok dependency and do a mix deps.get to enable ex_ngrok
+      # and facilitate iOS device testing which requires https
+      # access the unique ngrok URL displayed upon app start on your device:
+      # ..
+      # Generated littlechat app
+      # [info] ex_ngrok: Ngrok tunnel available at https://xyz.ngrok.io
+      # ..
+      # (NB the URL changes upon each app start on free tier and is limited to 4 connections - https://ngrok.com/pricing
+      # eg. use localhost on your dev computer)
+      # can also be useful for testing between different and remote networks
+      # {:ex_ngrok, "~> 0.3.0", only: [:dev]}
     ]
   end
 
