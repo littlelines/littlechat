@@ -61,9 +61,11 @@ defmodule Littlechat.MixProject do
       {:stun, "~> 1.0"},
       {:sentry, "~> 8.0-rc.2"},
       {:hackney, "~> 1.8"}
-      # install ngrok https://github.com/joshuafleck/ex_ngrok#dependencies and
-      # uncomment the ex_ngrok dependency and do a mix deps.get to enable ex_ngrok
-      # and facilitate iOS device testing which requires https
+      # to facilitate iOS device testing in dev which requires https:
+      # install ngrok https://github.com/joshuafleck/ex_ngrok#dependencies
+      # uncomment the ex_ngrok dependency below and do a mix deps.get
+      # uncomment the ngrok config in dev.exs
+      #
       # access the unique ngrok URL displayed upon app start on your device:
       # ..
       # Generated littlechat app
@@ -72,6 +74,7 @@ defmodule Littlechat.MixProject do
       # (NB the URL changes upon each app start on free tier and is limited to 4 connections - https://ngrok.com/pricing
       # eg. use localhost on your dev computer)
       # can also be useful for testing between different and remote networks
+      # uncomment below:
       # {:ex_ngrok, "~> 0.3.0", only: [:dev]}
     ]
   end
