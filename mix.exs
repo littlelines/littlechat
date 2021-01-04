@@ -42,24 +42,24 @@ defmodule Littlechat.MixProject do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
-      {:phoenix, "~> 1.5.4"},
+      {:phoenix, "~> 1.5.7"},
       {:phoenix_ecto, "~> 4.2"},
-      {:ecto_sql, "~> 3.4"},
+      {:ecto_sql, "~> 3.5"},
       {:postgrex, ">= 0.0.0"},
-      {:phoenix_live_view, "~> 0.14.4"},
+      {:phoenix_live_view, "~> 0.15.3"},
       {:floki, ">= 0.0.0", only: :test},
-      {:phoenix_html, "~> 2.11"},
-      {:phoenix_live_reload, "~> 1.2", only: :dev},
-      {:telemetry_metrics, "~> 0.4"},
-      {:telemetry_poller, "~> 0.4"},
+      {:phoenix_html, "~> 2.14"},
+      {:phoenix_live_reload, "~> 1.3", only: :dev},
+      {:telemetry_metrics, "~> 0.6"},
+      {:telemetry_poller, "~> 0.5"},
       {:gettext, "~> 0.18"},
-      {:jason, "~> 1.1"},
-      {:plug_cowboy, "~> 2.0"},
+      {:jason, "~> 1.2"},
+      {:plug_cowboy, "~> 2.4"},
       {:uuid, "~> 1.1"},
       {:distillery, "~> 2.0"},
       {:stun, "~> 1.0"}, # See https://github.com/processone/ejabberd/issues/1107#issuecomment-217828211 if you have errors installing this on macOS.
-      {:sentry, "~> 8.0-rc.2"},
-      {:hackney, "~> 1.8"}
+      {:sentry, "~> 8.0.4"},
+      {:hackney, "~> 1.17"}
     ]
   end
 
