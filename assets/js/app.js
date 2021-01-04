@@ -55,7 +55,12 @@ function removeUserConnection(userUuid) {
 function createPeerConnection(lv, fromUser, offer) {
   let newPeerConnection = new RTCPeerConnection({
     iceServers: [
-      { urls: "stun:littlechat.app:3478" }
+      { urls: "stun:littlechat.app:3478" },
+      {
+        urls: "turn:d6fe1c9edae1.ngrok.io",
+        username: "jesse",
+        credential: "password"
+      }
     ]
   })
   users[fromUser].peerConnection = newPeerConnection;
